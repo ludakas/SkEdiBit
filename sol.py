@@ -1,16 +1,22 @@
 #! /usr/env/bin/python
 from splitOrders import *
 from parse_input import *
+import time
 
 TURNS = 0
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders, max_payload, weights)
   while len(tasks) > 0:
+    start = time.time()
     (task, drone, warehouse) = getBest(tasks, drones, warehouses)
+    end = time.time()
+    print "Tasks remaining: %d\t Time: %fs" % (len(tasks), end-start)
     #for wh in warehouses:
       #print "WarehousID: %d, items: %s'" % (wh.id, str(wh.items))
     #print "Picked task: %d, drone: %d, warehouse: %d itemID: %d n_item %d" %(task.id, drone.id, warehouse.id, task.item_type, task.n_items)
     drone.assign(task, warehouse)
+    
+    
 
   # Now we are finished
   writeOutput(drones)
