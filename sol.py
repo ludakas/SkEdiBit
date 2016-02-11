@@ -24,6 +24,7 @@ def getBest(tasks, drones, warehouses):
 
 def costOfPair(drone, task, warehouses):
   warehouse = getWarehouse(drone, task, warehouses)
+  print type(warehouse), type(drone), type(task)
   toHouse = distanceSquared(drone.location, warehouse.location)
   toCustomer = distanceSquared(warehouse.location, task.location)
   return toHouse + toCustomer
