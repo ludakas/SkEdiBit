@@ -51,8 +51,9 @@ class Drone(object):
   def assign(self, task):
     # TODO
     self.history.append(task)
-    self.available += np.celi( distanceSquared(self.location, ) ) + 1 
-    pass
+    self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
+    self.location = task.location
+    
 
   def getOutput(self):
     #TODO

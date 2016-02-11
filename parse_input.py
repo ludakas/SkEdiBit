@@ -26,7 +26,7 @@ class Order(object):
 class Task(object):
     """docstring for Order"""
     def __init__(self, r,c,item_type,n_items):
-        super(Order, self).__init__()
+        super(Task, self).__init__()
         self.r = r
         self.c = c
         self.item_type = item_type
