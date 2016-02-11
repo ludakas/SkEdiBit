@@ -5,8 +5,8 @@ from parse_input import *
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
   while len(tasks) > 0:
-    (task, drone) = getBest(tasks, drones, warehouses)
-    drone.assign(task)
+    (task, drone, warehouse) = getBest(tasks, drones, warehouses)
+    drone.assign(task, warehouse)
 
   # Now we are finished
   writeOutput(drones)
@@ -16,9 +16,10 @@ def getBest(tasks, drones, warehouses):
   for drone in drones:
     for taskId, task in enumerate(tasks):
       cost = costOfPair(drone, task, warehouses)
+      cost, warehouse = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
-        bestPair = (taskId, task, drone)
+        bestPair = (taskId, task, drone, warehouse)
   del tasks[taskId]
   return bestPair[1:]
 
@@ -27,11 +28,15 @@ def costOfPair(drone, task, warehouses):
   print type(warehouse), type(drone), type(task)
   toHouse = distanceSquared(drone.location, warehouse.location)
   toCustomer = distanceSquared(warehouse.location, task.location)
-  return toHouse + toCustomer
+  return toHouse + toCustomer, warehouse
 
 def getWarehouse(drone, task, warehouses):
-  #TODO
-  return warehouses[0]
+  item_type = task.item_type
+  n_items = task.n_items
+  for warehouse in warehouses:
+    if warehouse.items[item_type] >= n_items:
+      return warehouse
+  raise ValueError("WTF - should not happen")
 
 def distanceSquared(x, y):
   return (x[0]-y[0])**2 + (x[1]-y[0])**2
@@ -58,7 +63,7 @@ class Drone(object):
 
   def getOutput(self):
     output = ''
-    
+
     for (wh, task) in self.history:
         output += self.id+' L '+wh.id+' '+task.item_type+' '+task.n_items+'\n'
         output += self.id+' D '+task.id+' '+task.item_type+' '+task.n_items+'\n'
