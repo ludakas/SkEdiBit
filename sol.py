@@ -47,9 +47,14 @@ class Drone(object):
     self.location = (0, 0)
     self.history = []
 
-  def assign(self, task):
-    # TODO
-    pass
+  def assign(self, task, warehouse):
+    assert warehouse.items[task.item_type]>=task.n_items, "not enough items in the warehouse"
+
+    warehouse.items[task.item_type] -= task.n_items    
+    self.history.append((task,warehouse))
+    self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
+    self.location = task.location
+    
 
   def getOutput(self):
     output = ''
