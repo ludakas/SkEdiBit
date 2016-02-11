@@ -49,8 +49,7 @@ class Drone(object):
     self.available = 0
 
   def assign(self, task, warehouse):
-    # TODO
-    self.history.append(task)
+    self.history.append((task,warehouse))
     self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
     self.location = task.location
     
