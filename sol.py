@@ -38,6 +38,7 @@ def getWarehouse(drone, task, warehouses):
   item_type = task.item_type
   n_items = task.n_items
   for warehouse in warehouses:
+    print warehouse.items, item_type
     if warehouse.items[item_type] >= n_items:
       return warehouse
   print item_type, n_items
@@ -75,9 +76,10 @@ class Drone(object):
   def getOutput(self):
     output = ''
 
-    for (wh, task) in self.history:
-        output += self.id+' L '+wh.id+' '+task.item_type+' '+task.n_items+'\n'
-        output += self.id+' D '+task.id+' '+task.item_type+' '+task.n_items+'\n'
+    for (task, wh) in self.history:
+        output += str(self.id)+' L '+str(wh.id)+' '+str(task.item_type)+' '+str(task.n_items)+'\n'
+        output += str(self.id)+' D '+str(task.id)+' '+str(task.item_type)+' '+str(task.n_items)+'\n'
+    return output
 
 if __name__ == "__main__":
   n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff()
