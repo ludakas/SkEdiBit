@@ -5,8 +5,9 @@ import numpy as np
 
 class Warehouse(object):
     """docstring for Warehouse"""
-    def __init__(self, r, c, items):
+    def __init__(self, id, r, c, items):
         super(Warehouse, self).__init__()
+        self.id = id
         self.r = r
         self.c = c
         self.items = items

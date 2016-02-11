@@ -44,6 +44,7 @@ def writeOutput(drones):
 
 class Drone(object):
   def __init__(self):
+    self.id = 0 #TODO
     self.location = (0, 0)
     self.history = []
     self.available = 0
@@ -55,8 +56,11 @@ class Drone(object):
     
 
   def getOutput(self):
-    #TODO
-    pass
+    output = ''
+    
+    for (wh, task) in self.history:
+        output += self.id+' L '+wh.id+' '+task.item_type+' '+task.n_items+'\n'
+        output += self.id+' D '+task.id+' '+task.item_type+' '+task.n_items+'\n'
 
 if __name__ == "__main__":
   n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff()
