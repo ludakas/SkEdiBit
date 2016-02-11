@@ -1,13 +1,12 @@
 #! /usr/env/bin/python
 from splitOrders import *
 from parse_input import *
-import numpy as np
 
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
   while len(tasks) > 0:
-    (task, drone, warehouse) = getBest(tasks, drones, warehouses)
-    drone.assign(task, warehouse)
+    (task, drone) = getBest(tasks, drones, warehouses)
+    drone.assign(task)
 
   # Now we are finished
   writeOutput(drones)
@@ -16,10 +15,10 @@ def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
   for drone in drones:
     for taskId, task in enumerate(tasks):
-      cost, warehouse = costOfPair(drone, task, warehouses)
+      cost = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
-        bestPair = (taskId, task, drone, warehouse)
+        bestPair = (taskId, task, drone)
   del tasks[taskId]
   return bestPair[1:]
 
@@ -28,7 +27,7 @@ def costOfPair(drone, task, warehouses):
   print type(warehouse), type(drone), type(task)
   toHouse = distanceSquared(drone.location, warehouse.location)
   toCustomer = distanceSquared(warehouse.location, task.location)
-  return toHouse + toCustomer, warehouse
+  return toHouse + toCustomer
 
 def getWarehouse(drone, task, warehouses):
   #TODO
@@ -43,17 +42,14 @@ def writeOutput(drones):
       f.write(drone.getOutput())
 
 class Drone(object):
-  def __init__(self):
-    self.id = 0 #TODO
+  def __init__(self, id):
+    self.id = id
     self.location = (0, 0)
     self.history = []
-    self.available = 0
 
-  def assign(self, task, warehouse):
-    self.history.append((task,warehouse))
-    self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
-    self.location = task.location
-    
+  def assign(self, task):
+    # TODO
+    pass
 
   def getOutput(self):
     output = ''
@@ -65,8 +61,8 @@ class Drone(object):
 if __name__ == "__main__":
   n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff()
   drones = []
-  for _ in range(n_drones):
-    drones.append(Drone())
+  for i in range(n_drones):
+    drones.append(Drone(i))
   print n_rows
   distributeTasks(orders, drones, warehouses)
 
