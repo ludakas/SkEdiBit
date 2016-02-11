@@ -3,7 +3,7 @@ from splitOrders import *
 from parse_input import *
 
 def distributeTasks(orders, drones, warehouses):
-  tasks = splitOrders(orders)
+  tasks = splitOrders(orders, max_payload, weights)
   while len(tasks) > 0:
     (task, drone, warehouse) = getBest(tasks, drones, warehouses)
     drone.assign(task, warehouse)
