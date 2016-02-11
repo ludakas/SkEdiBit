@@ -12,11 +12,7 @@ def splitOrders(orders):
         for i in range(len(o.items)):
             
             if o.items[i] > 0:
-                newTask = Task()
-                newTask.r = o.r
-                newTask.c = o.c
-                newTask.item_type = o.items[i]
-                newTask.n_items = i
+                newTask = Task(o.r, o.c, o.items[i], i)
                 tasks.append(newTask)
      
     return tasks
