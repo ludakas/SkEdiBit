@@ -30,7 +30,7 @@ def distanceSquared(x, y):
   return (x[0]-y[0])**2 + (x[1]-y[0])**2
 
 def writeOutput(drones):
-  with open('output.txt') as f:
+  with open('output.txt', 'w') as f:
   for drone in drones:
     f.write(drone.getOutput())
 
