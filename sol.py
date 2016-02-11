@@ -30,8 +30,12 @@ def costOfPair(drone, task, warehouses):
   return toHouse + toCustomer, warehouse
 
 def getWarehouse(drone, task, warehouses):
-  #TODO
-  return warehouses[0]
+  item_type = task.item_type
+  n_items = task.n_items
+  for warehouse in warehouses:
+    if warehouse.items[item_type] >= n_items:
+      return warehouse
+  raise ValueError("WTF - should not happen")
 
 def distanceSquared(x, y):
   return (x[0]-y[0])**2 + (x[1]-y[0])**2
