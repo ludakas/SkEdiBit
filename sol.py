@@ -38,8 +38,8 @@ def getWarehouse(drone, task, warehouses):
       return warehouse
   raise ValueError("WTF - should not happen")
 
-def distanceSquared(x, y):
-  return (x[0]-y[0])**2 + (x[1]-y[0])**2
+def distance(x, y):
+  return np.sqrt((x[0]-y[0])**2 + (x[1]-y[0])**2)
 
 def writeOutput(drones):
   with open('output.txt', 'w') as f:
