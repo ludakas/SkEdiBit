@@ -1,3 +1,5 @@
+from parse_input import *
+
 # Splits orders into tasks.
 # Assumes items in each order are sorted !!!!
 def splitOrders(orders):
@@ -7,39 +9,18 @@ def splitOrders(orders):
         
         lastItem = -1
         count = 0
-        for item in o.items:
+        for i in range(len(o.items)):
             
-            if item == lastItem:
-                count += 1
-            else:
-                # Save previous
-                if (lastItem != -1):
-                    newTask = Object()
-                    newTask.r = o.r
-                    newTask.c = o.c
-                    newTask.type = lastItem
-                    newTask.count = count
-                    tasks.append(newTask)
-                
-                # Set up next
-                count = 1
-                lastItem = item
-         
-         
-        # Save last item
-        newTask = Object()
-        newTask.r = o.r
-        newTask.c = o.c
-        newTask.type = lastItem
-        newTask.count = count
-        tasks.append(newTask)
+            if o.items[i] > 0:
+                newTask = Task(o.r, o.c, o.items[i], i)
+                tasks.append(newTask)
      
     return tasks
     
     
     
-class Object(object):
-    pass
+# class Object(object):
+    # pass
     
 # dummy1 = Object()
 # dummy1.r = 5

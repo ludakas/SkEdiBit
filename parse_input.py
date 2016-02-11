@@ -31,6 +31,7 @@ class Task(object):
         self.c = c
         self.item_type = item_type
         self.n_items = n_items
+        self.location = (r,c)
 
 
 def str2int(string_list):
