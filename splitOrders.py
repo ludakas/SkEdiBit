@@ -17,7 +17,7 @@ def splitOrders(orders, max_payload, weights):
             if o.items[i] > 0:
 
                 while (o.items[i]*weights[i] > max_payload):
-                    max_items = math.floor((0.0+max_payload)/weights[i])
+                    max_items = int(math.floor((0.0+max_payload)/weights[i]))
                     newTask = Task(o.id, o.r, o.c, i, max_items)
                     tasks.append(newTask)
 
