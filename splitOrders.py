@@ -1,8 +1,9 @@
 from parse_input import *
+import math
 
 # Splits orders into tasks.
 # Assumes items in each order are sorted !!!!
-def splitOrders(orders):
+def splitOrders(orders, max_payload, weights):
     tasks = []
     
     for o in orders:
@@ -12,6 +13,14 @@ def splitOrders(orders):
         for i in range(len(o.items)):
             
             if o.items[i] > 0:
+                
+                while (o.items[i]*weights[i] > max_payload):
+                    max_items = o.items[i] - math.ceil((0.0+max_payload)/weights[i])
+                    newTask = Task(o.id, o.r, o.c, i, max_items)
+                    tasks.append(newTask)
+                    
+                    o.items[i] = o.items[i] - max_items
+            
                 newTask = Task(o.id, o.r, o.c, o.items[i], i)
                 tasks.append(newTask)
      

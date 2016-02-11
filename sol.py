@@ -4,7 +4,7 @@ from parse_input import *
 
 TURNS = 0
 def distributeTasks(orders, drones, warehouses):
-  tasks = splitOrders(orders)
+  tasks = splitOrders(orders, max_payload, weights)
   while len(tasks) > 0:
     (task, drone, warehouse) = getBest(tasks, drones, warehouses)
     drone.assign(task, warehouse)
@@ -42,8 +42,8 @@ def getWarehouse(drone, task, warehouses):
       return warehouse
   raise ValueError("WTF - should not happen")
 
-def distanceSquared(x, y):
-  return (x[0]-y[0])**2 + (x[1]-y[0])**2
+def distance(x, y):
+  return np.sqrt((x[0]-y[0])**2 + (x[1]-y[0])**2)
 
 def writeOutput(drones):
   with open('output.txt', 'w') as f:
@@ -56,9 +56,14 @@ class Drone(object):
     self.location = (0, 0)
     self.history = []
 
-  def assign(self, task):
-    # TODO
-    pass
+  def assign(self, task, warehouse):
+    assert warehouse.items[task.item_type]>=task.n_items, "not enough items in the warehouse"
+
+    warehouse.items[task.item_type] -= task.n_items    
+    self.history.append((task,warehouse))
+    self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
+    self.location = task.location
+    
 
   def getOutput(self):
     output = ''
