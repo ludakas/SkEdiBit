@@ -6,8 +6,8 @@ import numpy as np
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
   while len(tasks) > 0:
-    (task, drone) = getBest(tasks, drones, warehouses)
-    drone.assign(task)
+    (task, drone, warehouse) = getBest(tasks, drones, warehouses)
+    drone.assign(task, warehouse)
 
   # Now we are finished
   writeOutput(drones)
@@ -16,10 +16,10 @@ def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
   for drone in drones:
     for taskId, task in enumerate(tasks):
-      cost = costOfPair(drone, task, warehouses)
+      cost, warehouse = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
-        bestPair = (taskId, task, drone)
+        bestPair = (taskId, task, drone, warehouse)
   del tasks[taskId]
   return bestPair[1:]
 
@@ -28,7 +28,7 @@ def costOfPair(drone, task, warehouses):
   print type(warehouse), type(drone), type(task)
   toHouse = distanceSquared(drone.location, warehouse.location)
   toCustomer = distanceSquared(warehouse.location, task.location)
-  return toHouse + toCustomer
+  return toHouse + toCustomer, warehouse
 
 def getWarehouse(drone, task, warehouses):
   #TODO
@@ -48,7 +48,7 @@ class Drone(object):
     self.history = []
     self.available = 0
 
-  def assign(self, task):
+  def assign(self, task, warehouse):
     # TODO
     self.history.append(task)
     self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
