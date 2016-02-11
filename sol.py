@@ -28,7 +28,7 @@ def costOfPair(drone, task, warehouses):
   print type(warehouse), type(drone), type(task)
   toHouse = distanceSquared(drone.location, warehouse.location)
   toCustomer = distanceSquared(warehouse.location, task.location)
-  return toHouse + toCustomer, warehouse
+  return toHouse + toCustomer + drone.available, warehouse
 
 def getWarehouse(drone, task, warehouses):
   item_type = task.item_type
