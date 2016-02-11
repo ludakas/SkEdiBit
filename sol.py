@@ -14,7 +14,7 @@ def distributeTasks(orders, drones, warehouses):
 def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
   for drone in drones:
-    for taskId, tasks in enumerate(tasks):
+    for taskId, task in enumerate(tasks):
       cost = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
@@ -27,6 +27,10 @@ def costOfPair(drone, task, warehouses):
   toHouse = distanceSquared(drone.location, warehouse.location)
   toCustomer = distanceSquared(warehouse.location, task.location)
   return toHouse + toCustomer
+
+def getWarehouse(drone, task, warehouses):
+  #TODO
+  return warehouses[0]
 
 def distanceSquared(x, y):
   return (x[0]-y[0])**2 + (x[1]-y[0])**2
