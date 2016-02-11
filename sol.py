@@ -40,6 +40,7 @@ def getWarehouse(drone, task, warehouses):
   for warehouse in warehouses:
     if warehouse.items[item_type] >= n_items:
       return warehouse
+  print item_type, n_items
   raise ValueError("WTF - should not happen")
 
 def distance(x, y):
@@ -51,7 +52,7 @@ def writeOutput(drones):
     for drone in drones:
       n += 2*len(drone.history)
     f.write(str(n)+'\n')
-      
+
     for drone in drones:
       f.write(drone.getOutput())
 
@@ -65,11 +66,11 @@ class Drone(object):
   def assign(self, task, warehouse):
     assert warehouse.items[task.item_type]>=task.n_items, "not enough items in the warehouse"
 
-    warehouse.items[task.item_type] -= task.n_items    
+    warehouse.items[task.item_type] -= task.n_items
     self.history.append((task,warehouse))
-    self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1 
+    self.available += np.ceil( distanceSquared(self.location, task.location) ) + 1
     self.location = task.location
-    
+
 
   def getOutput(self):
     output = ''

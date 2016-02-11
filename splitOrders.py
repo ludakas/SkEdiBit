@@ -11,6 +11,7 @@ def splitOrders(orders, max_payload, weights):
 
         lastItem = -1
         count = 0
+        print o.items
         for i in range(len(o.items)):
 
             if o.items[i] > 0:
