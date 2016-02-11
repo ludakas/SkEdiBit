@@ -60,6 +60,7 @@ class Drone(object):
     self.id = id
     self.location = (0, 0)
     self.history = []
+    self.available = 0
 
   def assign(self, task, warehouse):
     assert warehouse.items[task.item_type]>=task.n_items, "not enough items in the warehouse"
