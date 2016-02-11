@@ -15,8 +15,9 @@ class Warehouse(object):
 
 class Order(object):
     """docstring for Order"""
-    def __init__(self, r,c,n_items,items):
+    def __init__(self,id,r,c,n_items,items):
         super(Order, self).__init__()
+        self.id = id
         self.r = r
         self.c = c
         self.n_items = n_items
@@ -26,8 +27,9 @@ class Order(object):
 
 class Task(object):
     """docstring for Order"""
-    def __init__(self, r,c,item_type,n_items):
+    def __init__(self,id,r,c,item_type,n_items):
         super(Task, self).__init__()
+        self.id = id
         self.r = r
         self.c = c
         self.item_type = item_type
@@ -50,7 +52,7 @@ def parseStuff():
   for i in xrange(n_warehouses):
       r, c = str2int( f.readline().split() )
       items = str2int( f.readline().split() )
-      warehouses.append(Warehouse(r,c,items))
+      warehouses.append(Warehouse(i,r,c,items))
 
 
   n_orders = int(f.readline())
@@ -64,7 +66,7 @@ def parseStuff():
       for e in items_list:
           items[e] += 1
 
-      orders.append(Order(r,c,n_items,items))
+      orders.append(Order(i,r,c,n_items,items))
 
  #print 'n_rows',n_rows, 'n_columns',n_columns, 'n_drones',n_drones, 'turns',turns, 'max_payload',turns
  #print 'n_product_types',n_product_types
