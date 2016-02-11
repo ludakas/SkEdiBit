@@ -1,6 +1,7 @@
 #! /usr/env/bin/python
 from splitOrders import *
 from parse_input import *
+import numpy as np
 
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
@@ -40,9 +41,12 @@ class Drone(object):
   def __init__(self):
     self.location = (0, 0)
     self.history = []
+    self.available = 0
 
   def assign(self, task):
     # TODO
+    self.history.append(task)
+    self.available += np.celi( distanceSquared(self.location, ) ) + 1 
     pass
 
   def getOutput(self):
