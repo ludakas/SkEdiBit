@@ -1,5 +1,6 @@
 #! /usr/env/bin/python
 from splitOrders import *
+from parse_input import *
 
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
@@ -35,8 +36,25 @@ def writeOutput(drones):
     for drone in drones:
       f.write(drone.getOutput())
 
-if __name__ == "__main__":
-  distributeTasks(orders, drones, warehouses)
+class Drone(object):
+  def __init__(self):
+    self.location = (0, 0)
+    self.history = []
 
+  def assign(self, task):
+    # TODO
+    pass
+
+  def getOutput(self):
+    #TODO
+    pass
+
+if __name__ == "__main__":
+  n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff()
+  drones = []
+  for _ in range(n_drones):
+    drones.append(Drone())
+  print n_rows
+  distributeTasks(orders, drones, warehouses)
 
 
