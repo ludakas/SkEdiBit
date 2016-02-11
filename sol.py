@@ -47,6 +47,11 @@ def distance(x, y):
 
 def writeOutput(drones):
   with open('output.txt', 'w') as f:
+    n = 0
+    for drone in drones:
+      n += 2*len(drone.history)
+    f.write(str(n)+'\n')
+      
     for drone in drones:
       f.write(drone.getOutput())
 
