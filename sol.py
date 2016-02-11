@@ -2,6 +2,7 @@
 from splitOrders import *
 from parse_input import *
 
+TURNS = 0
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
   while len(tasks) > 0:
@@ -26,8 +27,11 @@ def getBest(tasks, drones, warehouses):
 def costOfPair(drone, task, warehouses):
   warehouse = getWarehouse(drone, task, warehouses)
   print type(warehouse), type(drone), type(task)
-  toHouse = distanceSquared(drone.location, warehouse.location)
-  toCustomer = distanceSquared(warehouse.location, task.location)
+  toHouse = distance(drone.location, warehouse.location)
+  toCustomer = distance(warehouse.location, task.location)
+  timeToFinish = toHouse + toCustomer + drone.available
+  if timeToFinish > TURNS:
+    return sys.maxint, warehouse
   return toHouse + toCustomer + drone.available, warehouse
 
 def getWarehouse(drone, task, warehouses):
@@ -65,6 +69,7 @@ class Drone(object):
 
 if __name__ == "__main__":
   n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff()
+  TURNS = turns
   drones = []
   for i in range(n_drones):
     drones.append(Drone(i))
