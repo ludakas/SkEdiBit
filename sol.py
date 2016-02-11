@@ -1,4 +1,5 @@
 #! /usr/env/bin/python
+from splitOrders import *
 
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders)
@@ -31,8 +32,8 @@ def distanceSquared(x, y):
 
 def writeOutput(drones):
   with open('output.txt', 'w') as f:
-  for drone in drones:
-    f.write(drone.getOutput())
+    for drone in drones:
+      f.write(drone.getOutput())
 
 if __name__ == "__main__":
   distributeTasks(orders, drones, warehouses)
