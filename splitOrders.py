@@ -21,7 +21,7 @@ def splitOrders(orders, max_payload, weights):
                     
                     o.items[i] = o.items[i] - max_items
             
-                newTask = Task(o.id, o.r, o.c, o.items[i], i)
+                newTask = Task(o.id, o.r, o.c, i, o.items[i])
                 tasks.append(newTask)
      
     return tasks
