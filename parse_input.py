@@ -20,6 +20,16 @@ class Order(object):
         self.n_items = n_items
         self.items = items
         
+class Task(object):
+    """docstring for Order"""
+    def __init__(self, r,c,item_type,n_items):
+        super(Order, self).__init__()
+        self.r = r
+        self.c = c
+        self.item_type = item_type
+        self.n_items = n_items
+        
+        
 
 def str2int(string_list):
     return map(lambda x: int(x), string_list)
