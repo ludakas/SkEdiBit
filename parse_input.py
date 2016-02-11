@@ -25,7 +25,7 @@ def str2int(string_list):
     return map(lambda x: int(x), string_list)
 
 
-f = open('mother_of_all_warehouses.in', 'r')
+f = open('input/mother_of_all_warehouses.in', 'r')
 
 
 
