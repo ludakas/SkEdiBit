@@ -7,6 +7,9 @@ def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders, max_payload, weights)
   while len(tasks) > 0:
     (task, drone, warehouse) = getBest(tasks, drones, warehouses)
+    for warehouse in warehouses:
+      print "WarehousID: %d, items: %s'" % (warehouse.id, str(warehouse.items))
+    print "Picked task: %d, drone: %d, warehouse: %d itemID: %d n_item %d" %(task.id, drone.id, warehouse.id, task.item_type, task.n_items)
     drone.assign(task, warehouse)
 
   # Now we are finished
@@ -16,17 +19,15 @@ def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
   for drone in drones:
     for taskId, task in enumerate(tasks):
-      cost = costOfPair(drone, task, warehouses)
       cost, warehouse = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
         bestPair = (taskId, task, drone, warehouse)
-  del tasks[taskId]
+  del tasks[bestPair[0]]
   return bestPair[1:]
 
 def costOfPair(drone, task, warehouses):
   warehouse = getWarehouse(drone, task, warehouses)
-  print type(warehouse), type(drone), type(task)
   toHouse = distance(drone.location, warehouse.location)
   toCustomer = distance(warehouse.location, task.location)
   timeToFinish = toHouse + toCustomer + drone.available
@@ -35,11 +36,13 @@ def costOfPair(drone, task, warehouses):
   return toHouse + toCustomer + drone.available, warehouse
 
 def getWarehouse(drone, task, warehouses):
+  print "Task id %d item_type %d n_items %d " % (task.id, task.item_type, task.n_items)
   item_type = task.item_type
   n_items = task.n_items
   for warehouse in warehouses:
-    print warehouse.items, item_type
     if warehouse.items[item_type] >= n_items:
+      print warehouse.items, item_type, n_items
+      print "Selecting WH.id %d for task %d" % (warehouse.id, task.id)
       return warehouse
   print item_type, n_items
   raise ValueError("WTF - should not happen")
