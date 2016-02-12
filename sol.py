@@ -11,7 +11,8 @@ def distributeTasks(orders, drones, warehouses):
     start = time.time()
     (task, drone, warehouse) = getBest(tasks, drones, warehouses)
     end = time.time()
-    print "Tasks remaining: %d\t Time: %fs" % (len(tasks), end-start)
+    if len(tasks) % 10 == 0:
+        print "Tasks remaining: %d\t Time: %0.3fs" % (len(tasks), 10*(end-start))
     #for wh in warehouses:
       #print "WarehousID: %d, items: %s'" % (wh.id, str(wh.items))
     #print "Picked task: %d, drone: %d, warehouse: %d itemID: %d n_item %d" %(task.id, drone.id, warehouse.id, task.item_type, task.n_items)
@@ -24,13 +25,14 @@ def distributeTasks(orders, drones, warehouses):
 
 def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
+  taskSubset = enumerate(tasks[:100])
   for drone in drones:
-    subsetLength = 500;
-    if len(tasks) > subsetLength:
-        tasksRandSubset = [ (i, tasks[i]) for i in random.sample(xrange(len(tasks)), subsetLength) ]
-    else:
-        tasksRandSubset = enumerate(tasks)
-    for taskId, task in tasksRandSubset:
+    # subsetLength = 500;
+    # if len(tasks) > subsetLength:
+        # taskSubset = [ (i, tasks[i]) for i in random.sample(xrange(len(tasks)), subsetLength) ]
+    # else:
+        # taskSubset = enumerate(tasks)
+    for taskId, task in taskSubset:
       cost, warehouse = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
@@ -43,7 +45,7 @@ def costOfPair(drone, task, warehouses):
   toHouse = distance(drone.location, warehouse.location)
   toCustomer = distance(warehouse.location, task.location)
   timeToFinish = toHouse + toCustomer + drone.available
-  if timeToFinish > TURNS:
+  if timeToFinish >= TURNS:
     return sys.maxint, warehouse
   return toHouse + toCustomer + drone.available, warehouse
 
@@ -61,7 +63,7 @@ def distance(x, y):
   return np.sqrt((x[0]-y[0])**2 + (x[1]-y[0])**2)
 
 def writeOutput(drones):
-  with open('output.txt', 'w') as f:
+  with open('outputMom.txt', 'w') as f:
     n = 0
     for drone in drones:
       n += 2*len(drone.history)
