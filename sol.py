@@ -2,6 +2,7 @@
 from splitOrders import *
 from parse_input import *
 import time
+import random
 
 TURNS = 0
 def distributeTasks(orders, drones, warehouses):
@@ -24,7 +25,12 @@ def distributeTasks(orders, drones, warehouses):
 def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
   for drone in drones:
-    for taskId, task in enumerate(tasks):
+    subsetLength = 500;
+    if len(tasks) > subsetLength:
+        tasksRandSubset = [ (i, tasks[i]) for i in random.sample(xrange(len(tasks)), subsetLength) ]
+    else:
+        tasksRandSubset = enumerate(tasks)
+    for taskId, task in tasksRandSubset:
       cost, warehouse = costOfPair(drone, task, warehouses)
       if bestCost == None or cost < bestCost:
         bestCost = cost
