@@ -6,6 +6,8 @@ import random
 
 subsetLength = 100; # SET THIS !!!
 
+inputFile = 'm' # One of these ('m' 'b' 'r'), or can be the full file name as well, without the '.in'!
+
 TURNS = 0
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders, max_payload, weights)
@@ -63,7 +65,7 @@ def distance(x, y):
   return np.ceil(np.sqrt((x[0]-y[0])**2 + (x[1]-y[1])**2))
 
 def writeOutput(drones):
-  with open('outputBusy.txt', 'w') as f:
+  with open('output'+inputFile+'.txt', 'w') as f:
     n = 0
     for drone in drones:
       n += 2*len(drone.history)
@@ -97,7 +99,7 @@ class Drone(object):
     return output
 
 if __name__ == "__main__":
-  n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff()
+  n_rows, n_columns, n_drones, turns, max_payload, n_product_types, weights, n_warehouses, warehouses, n_orders, orders = parseStuff(inputFile)
   TURNS = turns
   drones = []
   for i in range(n_drones):
