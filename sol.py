@@ -76,7 +76,7 @@ class Drone(object):
 
     warehouse.items[task.item_type] -= task.n_items
     self.history.append((task,warehouse))
-    self.available += np.ceil( distance(self.location, task.location) ) + 1
+    self.available += np.ceil( distance(self.location, warehouse.location) ) + 2 + np.ceil(distance(warehouse.location, task.location))
     self.location = task.location
 
 
