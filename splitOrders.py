@@ -5,7 +5,7 @@ import math
 # Assumes items in each order are sorted !!!!
 def splitOrders(orders, max_payload, weights):
     print 'starting splitOrders'
-    maxItemsInOrder = 30 # Rough estimate
+    maxItemsInOrder = 100 # Rough estimate
     tasks = []
     tasksByOrderSize = []
     for i in range(maxItemsInOrder):

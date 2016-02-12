@@ -4,6 +4,8 @@ from parse_input import *
 import time
 import random
 
+subsetLength = 500; # SET THIS !!!
+
 TURNS = 0
 def distributeTasks(orders, drones, warehouses):
   tasks = splitOrders(orders, max_payload, weights)
@@ -13,40 +15,38 @@ def distributeTasks(orders, drones, warehouses):
     end = time.time()
     if len(tasks) % 10 == 0:
         print "Tasks remaining: %d\t Time: %0.3fs" % (len(tasks), 10*(end-start))
-    #for wh in warehouses:
-      #print "WarehousID: %d, items: %s'" % (wh.id, str(wh.items))
-    #print "Picked task: %d, drone: %d, warehouse: %d itemID: %d n_item %d" %(task.id, drone.id, warehouse.id, task.item_type, task.n_items)
+    if task is None:
+        break;
     drone.assign(task, warehouse)
-    
-    
 
   # Now we are finished
   writeOutput(drones)
 
 def getBest(tasks, drones, warehouses):
   bestCost, bestPair = None, None
-  taskSubset = enumerate(tasks[:100])
+  taskSubset = tasks[:subsetLength]
   for drone in drones:
-    # subsetLength = 500;
-    # if len(tasks) > subsetLength:
-        # taskSubset = [ (i, tasks[i]) for i in random.sample(xrange(len(tasks)), subsetLength) ]
-    # else:
-        # taskSubset = enumerate(tasks)
-    for taskId, task in taskSubset:
+    for taskId, task in enumerate(taskSubset):
       cost, warehouse = costOfPair(drone, task, warehouses)
+      if cost < 0:
+        continue
       if bestCost == None or cost < bestCost:
         bestCost = cost
         bestPair = (taskId, task, drone, warehouse)
-  del tasks[bestPair[0]]
-  return bestPair[1:]
+  if bestPair is not None:
+    del tasks[bestPair[0]]
+    return bestPair[1:]
+  else:
+    print 'No possible task left'
+    return (None, None, None)
 
 def costOfPair(drone, task, warehouses):
   warehouse = getWarehouse(drone, task, warehouses)
   toHouse = distance(drone.location, warehouse.location)
   toCustomer = distance(warehouse.location, task.location)
-  timeToFinish = toHouse + toCustomer + drone.available
-  if timeToFinish >= TURNS:
-    return sys.maxint, warehouse
+  timeToFinish = toHouse + toCustomer + drone.available + 2
+  if timeToFinish > TURNS:
+    return -1, warehouse
   return toHouse + toCustomer + drone.available, warehouse
 
 def getWarehouse(drone, task, warehouses):

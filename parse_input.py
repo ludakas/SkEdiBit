@@ -41,7 +41,7 @@ def str2int(string_list):
     return map(lambda x: int(x), string_list)
 
 def parseStuff():
-  f = open('input/mother_of_all_warehouses.in', 'r')
+  f = open('input/m.in', 'r')
   n_rows, n_columns, n_drones, turns, max_payload = str2int(f.readline().split())
   n_product_types = int(f.readline())
   weights = f.readline().split()
