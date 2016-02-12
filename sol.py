@@ -4,7 +4,7 @@ from parse_input import *
 import time
 import random
 
-subsetLength = 500; # SET THIS !!!
+subsetLength = 100; # SET THIS !!!
 
 TURNS = 0
 def distributeTasks(orders, drones, warehouses):
@@ -45,7 +45,7 @@ def costOfPair(drone, task, warehouses):
   toHouse = distance(drone.location, warehouse.location)
   toCustomer = distance(warehouse.location, task.location)
   timeToFinish = toHouse + toCustomer + drone.available + 2
-  if timeToFinish > TURNS:
+  if timeToFinish >= TURNS:
     return -1, warehouse
   return toHouse + toCustomer + drone.available, warehouse
 
@@ -60,10 +60,10 @@ def getWarehouse(drone, task, warehouses):
   raise ValueError("WTF - should not happen")
 
 def distance(x, y):
-  return np.sqrt((x[0]-y[0])**2 + (x[1]-y[0])**2)
+  return np.ceil(np.sqrt((x[0]-y[0])**2 + (x[1]-y[1])**2))
 
 def writeOutput(drones):
-  with open('outputMom.txt', 'w') as f:
+  with open('outputBusy.txt', 'w') as f:
     n = 0
     for drone in drones:
       n += 2*len(drone.history)
@@ -84,7 +84,7 @@ class Drone(object):
 
     warehouse.items[task.item_type] -= task.n_items
     self.history.append((task,warehouse))
-    self.available += np.ceil( distance(self.location, warehouse.location) ) + 2 + np.ceil(distance(warehouse.location, task.location))
+    self.available += distance(self.location, warehouse.location) + 2 + distance(warehouse.location, task.location)
     self.location = task.location
 
 
