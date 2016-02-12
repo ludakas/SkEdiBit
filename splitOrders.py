@@ -4,14 +4,16 @@ import math
 # Splits orders into tasks.
 # Assumes items in each order are sorted !!!!
 def splitOrders(orders, max_payload, weights):
-    tasks = []
     print 'starting splitOrders'
+    maxItemsInOrder = 30 # Rough estimate
+    tasks = []
+    tasksByOrderSize = []
+    for i in range(maxItemsInOrder):
+        tasksByOrderSize.append([])
 
     for o in orders:
 
-        lastItem = -1
-        count = 0
-        #print o.items
+        index = o.n_items
         for i in range(len(o.items)):
 
             if o.items[i] > 0:
@@ -19,12 +21,17 @@ def splitOrders(orders, max_payload, weights):
                 while (o.items[i]*weights[i] > max_payload):
                     max_items = int(math.floor((0.0+max_payload)/weights[i]))
                     newTask = Task(o.id, o.r, o.c, i, max_items)
-                    tasks.append(newTask)
+                    tasksByOrderSize[index].append(newTask)
 
                     o.items[i] = o.items[i] - max_items
                 newTask = Task(o.id, o.r, o.c, i, o.items[i])
-                tasks.append(newTask)
+                tasksByOrderSize[index].append(newTask)
 
+    for i in range(maxItemsInOrder):
+        tasks += tasksByOrderSize[i]
+                
+                
+                
     print 'ending splitorders'
     return tasks
 
